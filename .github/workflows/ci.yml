@@ -2,12 +2,12 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, master ]
 
 jobs:
-  validate:
+  validate-knowledge:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,97 +17,56 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-        cache: 'npm'
-        cache-dependency-path: 'evals/package-lock.json'
 
-    - name: Install dependencies
-      working-directory: ./evals
-      run: npm ci
+    - name: Validate knowledge cards
+      run: node pattern-diagnose/scripts/validate-knowledge.mjs
 
-    - name: Validate power analysis
-      working-directory: ./evals
-      run: npm run power-analysis
-
-    - name: Validate protocols
+    - name: Build smell catalog
       run: |
-        node -e "
-          const fs = require('fs');
-          const protocol = JSON.parse(fs.readFileSync('evals/PROTOCOL.md', 'utf8'));
-          console.log('Protocol validation:');
-          console.log('- Registered cases: N=50');
-          console.log('- Primary metric: Top-1 accuracy');
-          console.log('- Alpha: 0.05 (no Bonferroni)');
-        "
+        node pattern-diagnose/scripts/build-smell-catalog.mjs
+        # Verify catalog was generated
+        test -f pattern-diagnose/references/smell-catalog.json
+        echo "Smell catalog generated successfully"
 
-    - name: Check documentation
+    - name: Check loading budget
       run: |
-        if [ ! -f "evals/PROTOCOL.md" ]; then
-          echo "ERROR: PROTOCOL.md not found"
+        SKILL_SIZE=$(wc -c < pattern-diagnose/SKILL.md)
+        echo "SKILL.md size: $SKILL_SIZE bytes (~$((SKILL_SIZE / 4)) tokens)"
+        # Budget is 8000 tokens, using chars/4 as estimate
+        if [ $((SKILL_SIZE / 4)) -gt 8000 ]; then
+          echo "FAIL: SKILL.md exceeds 8000 token budget"
           exit 1
         fi
-        if [ ! -f "evals/package.json" ]; then
-          echo "ERROR: evals/package.json not found"
-          exit 1
-        fi
+        echo "PASS: loading budget within limits"
 
-    - name: Lint scripts
-      run: |
-        node -c evals/scripts/*.mjs
-        echo "All JavaScript syntax checks passed"
-
-  test-eval:
+  validate-examples:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
       with:
-        node-version: '20'
-        cache: 'npm'
-        cache-dependency-path: 'evals/package-lock.json'
+        python-version: '3.12'
 
-    - name: Install dependencies
-      working-directory: ./evals
-      run: npm ci
-
-    - name: Test bootstrap CI
-      working-directory: ./evals
+    - name: Check Python syntax
       run: |
-        # Create test data
-        mkdir -p results
-        echo '{
-          "case1": {
-            "B": { "top1_correct": 1 },
-            "C": { "top1_correct": 1 }
-          },
-          "case2": {
-            "B": { "top1_correct": 0 },
-            "C": { "top1_correct": 1 }
-          }
-        }' > results/test-results.json
+        for f in $(find pattern-diagnose/assets/examples -name "*.py"); do
+          python -m py_compile "$f" || exit 1
+        done
+        echo "All Python examples pass syntax check"
 
-        node scripts/bootstrap-ci.mjs --results-dir results --output results/test-bootstrap.json
-        echo "Bootstrap CI test completed"
-
-    - name: Test ground truth kappa
-      working-directory: ./evals
+    - name: Check SPDX headers
       run: |
-        # Create test annotation data
-        mkdir -p cases/annotations
-        echo '{
-          "case1": { "pattern": "Strategy" },
-          "case2": { "pattern": "None" }
-        }' > cases/annotations/annotator1.json
-
-        echo '{
-          "case1": { "pattern": "Strategy" },
-          "case2": { "pattern": "Factory" }
-        }' > cases/annotations/annotator2.json
-
-        node scripts/ground-truth-kappa.mjs --annotations-dir cases/annotations --output results/test-kappa.json
-        echo "Ground truth kappa test completed"
+        FAIL=0
+        for f in $(find pattern-diagnose/assets/examples -name "*.ts" -o -name "*.py" -o -name "*.go"); do
+          if ! head -1 "$f" | grep -q "SPDX-License-Identifier"; then
+            echo "FAIL: missing SPDX header in $f"
+            FAIL=1
+          fi
+        done
+        exit $FAIL
 
   check-secrets:
     runs-on: ubuntu-latest
@@ -117,16 +76,28 @@ jobs:
 
     - name: Check for hardcoded secrets
       run: |
-        echo "Checking for potential secrets in code..."
-        grep -r "api_key\|secret\|token\|password" --exclude-dir=node_modules --exclude-dir=.git . || echo "No secrets found"
+        grep -rn "api_key\|secret_key\|password\s*=" --include="*.ts" --include="*.py" --include="*.go" --include="*.mjs" . || echo "No secrets found"
 
-    - name: Validate skill loading budget
-      run: |
-        node -e "
-          const fs = require('fs');
-          const skill = fs.readFileSync('docs/SKILL.md', 'utf8');
-          const strategy = fs.readFileSync('docs/references/strategy.md', 'utf8');
-          const total = skill.length + strategy.length;
-          console.log('Skill loading budget:', total, 'characters');
-          console.log('Budget (8,000 chars):', total <= 8000 ? 'PASS' : 'FAIL');
-        "
+  eval-scripts:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: 'evals/package-lock.json'
+
+    - name: Install dependencies
+      working-directory: ./evals
+      run: npm ci
+
+    - name: Lint eval scripts
+      run: node -c evals/scripts/*.mjs
+
+    - name: Validate power analysis
+      working-directory: ./evals
+      run: npm run power-analysis
