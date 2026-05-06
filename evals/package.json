@@ -1,0 +1,15 @@
+{
+  "name": "awesome-gof-patterns-evals",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "bootstrap-ci": "node scripts/bootstrap-ci.mjs",
+    "ground-truth-kappa": "node scripts/ground-truth-kappa.mjs",
+    "run-eval": "node scripts/run-eval.mjs",
+    "power-analysis": "node scripts/power-analysis.mjs"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^11.1.0"
+  }
+}

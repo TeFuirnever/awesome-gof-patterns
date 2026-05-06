@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Community Discussions
+    url: https://github.com/awesome-gof-patterns/awesome-gof-patterns/discussions
+    about: Join discussions with the community
+  - name: Documentation
+    url: https://awesome-gof-patterns.github.io/
+    about: Check our documentation for answers

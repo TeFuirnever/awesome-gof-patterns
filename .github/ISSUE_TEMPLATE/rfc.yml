@@ -1,0 +1,79 @@
+name: RFC (Request for Comments)
+description: Request feedback on a significant design change or addition
+title: "[RFC] "
+labels: ["rfc", "design"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing an RFC! This template helps us discuss significant design changes.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: A brief summary of the proposal
+      placeholder: Brief overview of the proposed change
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Why is this change necessary? What problem does it solve?
+      placeholder: Motivation for the proposed change...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: Detailed explanation of the proposed solution
+      placeholder: Detailed description of the solution...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: What other approaches did you consider?
+      placeholder: Alternatives and why they weren't chosen...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Impact Assessment
+      description: What is the expected impact of this change?
+      options:
+        - Major Breaking Change
+        - Minor Breaking Change
+        - Non-Breaking Enhancement
+        - Documentation Change
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: Implementation Notes
+      description: Any implementation details, technical constraints, or open questions
+      placeholder: Implementation details, technical challenges, etc.
+
+  - type: textarea
+    id: milestones
+    attributes:
+      label: Related Milestones
+      description: Does this RFC relate to any specific milestones or issues?
+      placeholder: References to issues or milestones...
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context, diagrams, examples, etc.
+      placeholder: Add any additional context...

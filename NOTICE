@@ -1,0 +1,45 @@
+# NOTICE
+
+This product includes content derived from third-party sources. All content
+under `pattern-diagnose/references/` and other CC BY-SA 4.0 marked files
+is a derivative work, written independently and fact-checked against the
+following upstream sources.
+
+## Upstream content sources
+
+### Wikipedia (CC BY-SA 4.0)
+- https://en.wikipedia.org/wiki/Strategy_pattern
+- https://en.wikipedia.org/wiki/Software_design_pattern
+- https://en.wikipedia.org/wiki/Design_Patterns
+
+Wikipedia content is licensed under CC BY-SA 4.0. Derivative works in this
+repository inherit this license (see LICENSE-CONTENT). Modifications:
+restructured for diagnostic-report use, condensed, paired with original
+worked examples and anti-patterns drawn from contributor experience.
+
+### Martin Fowler — public blog and catalog
+- https://martinfowler.com/eaaCatalog/
+- https://martinfowler.com/
+
+Used under fair use for short conceptual references (no verbatim copying of
+extended passages). Where a Fowler concept informs a knowledge card, it is
+cited inline in the `sources` frontmatter field of that card.
+
+## Excluded sources
+- Refactoring.Guru (CC BY-NC-SA): the NC clause is incompatible with this
+  project's commercial-use-permitted stance. Not used.
+- Gamma/Helm/Johnson/Vlissides "Design Patterns" (1994) book: copyrighted.
+  Not used as a source. Similarity to known passages is checked by
+  `scripts/similarity-check.mjs` with a 15% n-gram threshold.
+
+## Downstream obligations
+Forks and derivatives of CC BY-SA content must:
+1. Preserve this NOTICE file
+2. Retain SPDX-License-Identifier headers on individual files
+3. License modifications under CC BY-SA 4.0
+4. Provide attribution to "awesome-gof-patterns contributors" and the upstream chain
+   above
+
+## Code license
+Code (anything outside `pattern-diagnose/references/`, evals/cases prose, and
+similarly marked content) is licensed under MIT — see LICENSE-CODE.
