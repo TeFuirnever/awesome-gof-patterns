@@ -1,0 +1,910 @@
+{
+  "generated_at": "2026-05-06T10:12:18.709Z",
+  "evaluator": "self-eval (programmatic smell matching)",
+  "n_cases": 50,
+  "m1_accuracy": {
+    "armA": 0.38,
+    "armB": 0.34,
+    "armC": 0.5
+  },
+  "effect_CB": 0.15999999999999998,
+  "effect_BA": -0.03999999999999998,
+  "bootstrap_ci_95": {
+    "lower": -0.02,
+    "upper": 0.34
+  },
+  "discordant_pairs": {
+    "total": 24,
+    "b_to_c": 16,
+    "c_to_b": 8
+  },
+  "pattern_breakdown": {
+    "Strategy": {
+      "total": 10,
+      "armA": 6,
+      "armB": 5,
+      "armC": 4
+    },
+    "Observer": {
+      "total": 10,
+      "armA": 3,
+      "armB": 2,
+      "armC": 4
+    },
+    "FactoryMethod": {
+      "total": 10,
+      "armA": 1,
+      "armB": 2,
+      "armC": 0
+    },
+    "Adapter": {
+      "total": 10,
+      "armA": 2,
+      "armB": 3,
+      "armC": 8
+    },
+    "none": {
+      "total": 10,
+      "armA": 7,
+      "armB": 5,
+      "armC": 9
+    }
+  },
+  "go_no_go": {
+    "passed": true,
+    "threshold": 0.15,
+    "observed": 0.15999999999999998
+  },
+  "per_case": [
+    {
+      "caseId": "adapter-anti-001",
+      "category": "anti",
+      "expectedPattern": "none",
+      "armA": {
+        "predicted": "none",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "none",
+        "correct": true
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "adapter-anti-002",
+      "category": "anti",
+      "expectedPattern": "none",
+      "armA": {
+        "predicted": "none",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "none",
+        "correct": true
+      },
+      "armC": {
+        "predicted": "Factory Method",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "adapter-fit-001",
+      "category": "fit",
+      "expectedPattern": "Adapter",
+      "armA": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "Adapter",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "adapter-fit-002",
+      "category": "fit",
+      "expectedPattern": "Adapter",
+      "armA": {
+        "predicted": "Adapter",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "Adapter",
+        "correct": true
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "adapter-fit-003",
+      "category": "fit",
+      "expectedPattern": "Adapter",
+      "armA": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "Observer",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "Adapter",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "adapter-fit-004",
+      "category": "fit",
+      "expectedPattern": "Adapter",
+      "armA": {
+        "predicted": "FactoryMethod",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "FactoryMethod",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "Adapter",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "adapter-fit-005",
+      "category": "fit",
+      "expectedPattern": "Adapter",
+      "armA": {
+        "predicted": "Adapter",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "Adapter",
+        "correct": true
+      },
+      "armC": {
+        "predicted": "Adapter",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "adapter-fit-006",
+      "category": "fit",
+      "expectedPattern": "Adapter",
+      "armA": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "Adapter",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "adapter-fit-007",
+      "category": "fit",
+      "expectedPattern": "Adapter",
+      "armA": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "Adapter",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "adapter-fit-008",
+      "category": "fit",
+      "expectedPattern": "Adapter",
+      "armA": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "Adapter",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "adapter-fit-009",
+      "category": "fit",
+      "expectedPattern": "Adapter",
+      "armA": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "Adapter",
+        "correct": true
+      },
+      "armC": {
+        "predicted": "Adapter",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "adapter-fit-010",
+      "category": "fit",
+      "expectedPattern": "Adapter",
+      "armA": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "Factory Method",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "factory-method-anti-001",
+      "category": "anti",
+      "expectedPattern": "none",
+      "armA": {
+        "predicted": "FactoryMethod",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "FactoryMethod",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "factory-method-anti-002",
+      "category": "anti",
+      "expectedPattern": "none",
+      "armA": {
+        "predicted": "none",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "FactoryMethod",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "factory-method-fit-001",
+      "category": "fit",
+      "expectedPattern": "FactoryMethod",
+      "armA": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "Factory Method",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "factory-method-fit-002",
+      "category": "fit",
+      "expectedPattern": "FactoryMethod",
+      "armA": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "Strategy",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "factory-method-fit-003",
+      "category": "fit",
+      "expectedPattern": "FactoryMethod",
+      "armA": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "factory-method-fit-004",
+      "category": "fit",
+      "expectedPattern": "FactoryMethod",
+      "armA": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "factory-method-fit-005",
+      "category": "fit",
+      "expectedPattern": "FactoryMethod",
+      "armA": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "Factory Method",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "factory-method-fit-006",
+      "category": "fit",
+      "expectedPattern": "FactoryMethod",
+      "armA": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "Observer",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "factory-method-fit-007",
+      "category": "fit",
+      "expectedPattern": "FactoryMethod",
+      "armA": {
+        "predicted": "FactoryMethod",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "FactoryMethod",
+        "correct": true
+      },
+      "armC": {
+        "predicted": "Strategy",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "factory-method-fit-008",
+      "category": "fit",
+      "expectedPattern": "FactoryMethod",
+      "armA": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "FactoryMethod",
+        "correct": true
+      },
+      "armC": {
+        "predicted": "Factory Method",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "factory-method-fit-009",
+      "category": "fit",
+      "expectedPattern": "FactoryMethod",
+      "armA": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "factory-method-fit-010",
+      "category": "fit",
+      "expectedPattern": "FactoryMethod",
+      "armA": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "observer-anti-001",
+      "category": "anti",
+      "expectedPattern": "none",
+      "armA": {
+        "predicted": "Observer",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "Observer",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "observer-anti-002",
+      "category": "anti",
+      "expectedPattern": "none",
+      "armA": {
+        "predicted": "Observer",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "Observer",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "observer-anti-003",
+      "category": "anti",
+      "expectedPattern": "none",
+      "armA": {
+        "predicted": "none",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "none",
+        "correct": true
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "observer-fit-001",
+      "category": "fit",
+      "expectedPattern": "Observer",
+      "armA": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "Observer",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "observer-fit-002",
+      "category": "fit",
+      "expectedPattern": "Observer",
+      "armA": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "observer-fit-003",
+      "category": "fit",
+      "expectedPattern": "Observer",
+      "armA": {
+        "predicted": "Observer",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "Observer",
+        "correct": true
+      },
+      "armC": {
+        "predicted": "Observer",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "observer-fit-004",
+      "category": "fit",
+      "expectedPattern": "Observer",
+      "armA": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "observer-fit-005",
+      "category": "fit",
+      "expectedPattern": "Observer",
+      "armA": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "Strategy",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "observer-fit-006",
+      "category": "fit",
+      "expectedPattern": "Observer",
+      "armA": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "Strategy",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "observer-fit-007",
+      "category": "fit",
+      "expectedPattern": "Observer",
+      "armA": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "observer-fit-008",
+      "category": "fit",
+      "expectedPattern": "Observer",
+      "armA": {
+        "predicted": "Observer",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "Strategy",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "Observer",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "observer-fit-009",
+      "category": "fit",
+      "expectedPattern": "Observer",
+      "armA": {
+        "predicted": "Observer",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "Observer",
+        "correct": true
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "observer-fit-010",
+      "category": "fit",
+      "expectedPattern": "Observer",
+      "armA": {
+        "predicted": "FactoryMethod",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "FactoryMethod",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "Observer",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "strategy-anti-001",
+      "category": "anti",
+      "expectedPattern": "none",
+      "armA": {
+        "predicted": "none",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "none",
+        "correct": true
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "strategy-anti-002",
+      "category": "anti",
+      "expectedPattern": "none",
+      "armA": {
+        "predicted": "none",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "none",
+        "correct": true
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "strategy-anti-003",
+      "category": "anti",
+      "expectedPattern": "none",
+      "armA": {
+        "predicted": "none",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "FactoryMethod",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "strategy-fit-001",
+      "category": "fit",
+      "expectedPattern": "Strategy",
+      "armA": {
+        "predicted": "Strategy",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "Strategy",
+        "correct": true
+      },
+      "armC": {
+        "predicted": "Factory Method",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "strategy-fit-002",
+      "category": "fit",
+      "expectedPattern": "Strategy",
+      "armA": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "Observer",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "Strategy",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "strategy-fit-003",
+      "category": "fit",
+      "expectedPattern": "Strategy",
+      "armA": {
+        "predicted": "Strategy",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "FactoryMethod",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "Factory Method",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "strategy-fit-004",
+      "category": "fit",
+      "expectedPattern": "Strategy",
+      "armA": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "strategy-fit-005",
+      "category": "fit",
+      "expectedPattern": "Strategy",
+      "armA": {
+        "predicted": "Strategy",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "Strategy",
+        "correct": true
+      },
+      "armC": {
+        "predicted": "Strategy",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "strategy-fit-006",
+      "category": "fit",
+      "expectedPattern": "Strategy",
+      "armA": {
+        "predicted": "Strategy",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "Strategy",
+        "correct": true
+      },
+      "armC": {
+        "predicted": "Strategy",
+        "correct": true
+      }
+    },
+    {
+      "caseId": "strategy-fit-007",
+      "category": "fit",
+      "expectedPattern": "Strategy",
+      "armA": {
+        "predicted": "Strategy",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "Strategy",
+        "correct": true
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "strategy-fit-008",
+      "category": "fit",
+      "expectedPattern": "Strategy",
+      "armA": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "none",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "strategy-fit-009",
+      "category": "fit",
+      "expectedPattern": "Strategy",
+      "armA": {
+        "predicted": "Strategy",
+        "correct": true
+      },
+      "armB": {
+        "predicted": "Strategy",
+        "correct": true
+      },
+      "armC": {
+        "predicted": "Factory Method",
+        "correct": false
+      }
+    },
+    {
+      "caseId": "strategy-fit-010",
+      "category": "fit",
+      "expectedPattern": "Strategy",
+      "armA": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armB": {
+        "predicted": "none",
+        "correct": false
+      },
+      "armC": {
+        "predicted": "Strategy",
+        "correct": true
+      }
+    }
+  ]
+}
