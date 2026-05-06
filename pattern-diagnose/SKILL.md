@@ -48,6 +48,10 @@ Observer, Factory Method, and Adapter.
 
 ## Available patterns (v1)
 
+The smell catalog is in `references/smell-catalog.json` (auto-generated from
+knowledge cards by `scripts/build-smell-catalog.mjs`). Each entry maps a pattern
+to its smell IDs, anti-pattern IDs, and the reference file to load for details.
+
 | Pattern | Reference | Key smells |
 |---------|-----------|------------|
 | Strategy | `references/strategy.md` | long-conditional-on-type, parallel-subclass-only-differs-in-one-method, manual-callback-table |
@@ -58,8 +62,9 @@ Observer, Factory Method, and Adapter.
 ## Workflow
 
 1. Read the user's code (path or pasted snippet)
-2. Match the code against the smell catalog above to identify candidate pattern(s)
-3. Read the relevant reference file(s): `references/{pattern}.md`
+2. Read `references/smell-catalog.json` for the full smell-to-pattern mapping
+3. Match the code against the catalog's smell patterns to identify candidate pattern(s)
+4. Read the relevant reference file(s): `references/{pattern}.md`
 4. For each matched pattern, check smell evidence and anti-patterns from the frontmatter
 5. If at least one smell matches with concrete file:line evidence, produce a
    Diagnostic Report (template below)
