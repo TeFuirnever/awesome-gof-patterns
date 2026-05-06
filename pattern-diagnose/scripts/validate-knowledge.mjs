@@ -125,7 +125,20 @@ function stripQuotes(s) {
   return s;
 }
 
-function consumeBlockScalar() { return ""; }
+function consumeBlockScalar(lines, startIdx, baseIndent, advanceLine) {
+  const collected = [];
+  let j = startIdx;
+  while (j < lines.length) {
+    const ln = lines[j];
+    if (!ln.trim()) { collected.push(""); j++; advanceLine(); continue; }
+    const ind = ln.match(/^ */)[0].length;
+    if (ind < baseIndent) break;
+    collected.push(ln.slice(baseIndent));
+    j++;
+    advanceLine();
+  }
+  return collected.join("\n").trim();
+}
 
 function validate(card, file) {
   const errors = [];
@@ -137,17 +150,33 @@ function validate(card, file) {
   if (card.category && !validCategories.includes(card.category)) {
     errors.push(`category must be one of ${validCategories.join("|")}, got "${card.category}"`);
   }
-  if (Array.isArray(card.smells) && card.smells.length === 0) {
-    errors.push("smells must be non-empty");
+  if (Array.isArray(card.smells)) {
+    if (card.smells.length === 0) errors.push("smells must be non-empty");
+    for (const [i, s] of card.smells.entries()) {
+      if (typeof s === "object") {
+        if (!s.id) errors.push(`smells[${i}] missing id`);
+        if (!s.pattern || !s.pattern.trim()) errors.push(`smells[${i}] has empty pattern`);
+      }
+    }
   }
-  if (Array.isArray(card.anti_patterns) && card.anti_patterns.length === 0) {
-    errors.push("anti_patterns must be non-empty");
+  if (Array.isArray(card.anti_patterns)) {
+    if (card.anti_patterns.length === 0) errors.push("anti_patterns must be non-empty");
+    for (const [i, a] of card.anti_patterns.entries()) {
+      if (typeof a === "object") {
+        if (!a.id) errors.push(`anti_patterns[${i}] missing id`);
+        if (!a.rule || !a.rule.trim()) errors.push(`anti_patterns[${i}] has empty rule`);
+        if (!a.why || !a.why.trim()) errors.push(`anti_patterns[${i}] has empty why`);
+      }
+    }
   }
-  if (Array.isArray(card.steps) && card.steps.length === 0) {
-    errors.push("steps must be non-empty");
+  if (Array.isArray(card.steps)) {
+    if (card.steps.length === 0) errors.push("steps must be non-empty");
+    for (const [i, s] of card.steps.entries()) {
+      if (typeof s === "string" && !s.trim()) errors.push(`steps[${i}] is empty`);
+    }
   }
-  if (Array.isArray(card.sources) && card.sources.length === 0) {
-    errors.push("sources must be non-empty");
+  if (Array.isArray(card.sources)) {
+    if (card.sources.length === 0) errors.push("sources must be non-empty");
   }
   return errors;
 }
