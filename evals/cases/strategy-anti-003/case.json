@@ -1,0 +1,17 @@
+{
+  "id": "strategy-anti-003",
+  "pattern": "Strategy",
+  "category": "anti",
+  "complexity": "low",
+  "language": "Go",
+  "source_code": "func processOrder(order Order) {\n    total := calculateTotal(order.Items)\n    total = applyDiscount(total, order.DiscountPercent)\n    tax := calculateTax(total, order.Region)\n    final := total + tax\n    chargeCustomer(order.CustomerID, final)\n}",
+  "ground_truth": {
+    "pattern": "none",
+    "anti_patterns": [
+      "stateless-trivial-algorithm"
+    ],
+    "refactoring_steps_valid": false
+  },
+  "expected_smells": [],
+  "anti_reason": "Sequential pure function calls with no branching on type. No Strategy needed - each function is already a standalone operation."
+}

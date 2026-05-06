@@ -1,0 +1,16 @@
+{
+  "id": "adapter-fit-003",
+  "pattern": "Adapter",
+  "category": "fit",
+  "complexity": "low",
+  "language": "Go",
+  "source_code": "// Your logger interface\ntype Logger interface {\n    Info(msg string, fields ...Field)\n    Error(msg string, fields ...Field)\n}\n\n// Third-party library you can't modify\ntype ZapLogger struct {\n    inner *zap.SugaredLogger\n}\n\nfunc (z *ZapLogger) Infof(template string, args ...interface{}) {\n    z.inner.Infof(template, args...)\n}\n\nfunc (z *ZapLogger) Warnf(template string, args ...interface{}) {\n    z.inner.Warnf(template, args...)\n}\n\n// Every call site does this translation\nfunc (s *Service) DoWork() {\n    fields := []Field{{Key: \"request_id\", Value: s.reqID}}\n    // Can't pass ZapLogger where Logger is expected\n    // Must manually adapt at each usage\n    s.zapLogger.Infof(\"request_id=%s operation=do_work\", s.reqID)\n}",
+  "ground_truth": {
+    "pattern": "Adapter",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "incompatible-interface-shape"
+  ]
+}

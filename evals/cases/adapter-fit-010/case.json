@@ -1,0 +1,16 @@
+{
+  "id": "adapter-fit-010",
+  "pattern": "Adapter",
+  "category": "fit",
+  "complexity": "low",
+  "language": "TypeScript",
+  "source_code": "// Your system's date utility expects ISO 8601 strings\nfunction formatDate(isoDate: string): string {\n  return new Date(isoDate).toLocaleDateString();\n}\n\n// Third-party API returns dates in epoch milliseconds\ninterface ThirdPartyEvent {\n  event_name: string;\n  event_time_ms: number;  // epoch millis\n  metadata: Record<string, unknown>;\n}\n\n// Translation at call site\nclass EventDisplay {\n  showEvent(event: ThirdPartyEvent): string {\n    const isoDate = new Date(event.event_time_ms).toISOString();\n    return `${event.event_name} at ${formatDate(isoDate)}`;\n  }\n}",
+  "ground_truth": {
+    "pattern": "Adapter",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "incompatible-interface-shape"
+  ]
+}

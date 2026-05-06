@@ -1,0 +1,16 @@
+{
+  "id": "observer-fit-005",
+  "pattern": "Observer",
+  "category": "fit",
+  "complexity": "high",
+  "language": "Python",
+  "source_code": "class GameState:\n    def __init__(self):\n        self._health = 100\n        self._score = 0\n        self._listeners = []\n\n    def add_listener(self, fn):\n        self._listeners.append(fn)\n\n    @property\n    def health(self):\n        return self._health\n\n    @health.setter\n    def health(self, value):\n        self._health = value\n        for fn in self._listeners:\n            fn('health', value)\n\n    @property\n    def score(self):\n        return self._score\n\n    @score.setter\n    def score(self, value):\n        self._score = value\n        for fn in self._listeners:\n            fn('score', value)\n\n# Multiple UI elements and systems react to state changes\nstate = GameState()\nstate.add_listener(lambda prop, val: hud.update_health(val) if prop == 'health' else None)\nstate.add_listener(lambda prop, val: scoreboard.show(val) if prop == 'score' else None)\nstate.add_listener(lambda prop, val: achievement.check(val) if prop == 'score' else None)\nstate.add_listener(lambda prop, val: sound.play_hurt() if prop == 'health' and val < 30 else None)\nstate.add_listener(lambda prop, val: network.sync(prop, val))",
+  "ground_truth": {
+    "pattern": "Observer",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "manual-listener-list"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": "strategy-fit-003",
+  "pattern": "Strategy",
+  "category": "fit",
+  "complexity": "medium",
+  "language": "Go",
+  "source_code": "func sortData(data []int, algorithm string) []int {\n    switch algorithm {\n    case \"bubble\":\n        for i := 0; i < len(data); i++ {\n            for j := 0; j < len(data)-1; j++ {\n                if data[j] > data[j+1] {\n                    data[j], data[j+1] = data[j+1], data[j]\n                }\n            }\n        }\n        return data\n    case \"quick\":\n        return quickSort(data)\n    case \"merge\":\n        return mergeSort(data)\n    case \"heap\":\n        return heapSort(data)\n    case \"insertion\":\n        return insertionSort(data)\n    default:\n        return data\n    }\n}",
+  "ground_truth": {
+    "pattern": "Strategy",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "long-conditional-on-type"
+  ]
+}

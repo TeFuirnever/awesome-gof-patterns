@@ -1,0 +1,17 @@
+{
+  "id": "factory-method-fit-006",
+  "pattern": "FactoryMethod",
+  "category": "fit",
+  "complexity": "medium",
+  "language": "Go",
+  "source_code": "type AuthService struct {\n    provider Provider\n    logger   *zap.Logger\n    cache    Cache\n}\n\nfunc NewAuthService(cfg Config) *AuthService {\n    var provider Provider\n    switch cfg.Provider {\n    case \"google\":\n        provider = NewGoogleProvider(cfg.ClientID, cfg.ClientSecret)\n    case \"github\":\n        provider = NewGithubProvider(cfg.ClientID, cfg.ClientSecret)\n    case \"microsoft\":\n        provider = NewMicrosoftProvider(cfg.TenantID, cfg.ClientID)\n    default:\n        provider = NewLocalProvider(cfg.UserStore)\n    }\n\n    return &AuthService{\n        provider: provider,\n        logger:   zap.NewProduction(),    // hardcoded concrete\n        cache:    NewRedisCache(cfg.Redis), // hardcoded concrete\n    }\n}",
+  "ground_truth": {
+    "pattern": "FactoryMethod",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "conditional-construction",
+    "new-concrete-in-interface"
+  ]
+}

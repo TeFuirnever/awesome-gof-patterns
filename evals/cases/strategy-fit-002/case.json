@@ -1,0 +1,16 @@
+{
+  "id": "strategy-fit-002",
+  "pattern": "Strategy",
+  "category": "fit",
+  "complexity": "low",
+  "language": "Python",
+  "source_code": "class PaymentProcessor:\n    def process(self, method, amount):\n        if method == 'credit_card':\n            fee = amount * 0.03\n            print(f\"Charging credit card: {amount + fee}\")\n        elif method == 'paypal':\n            fee = amount * 0.05\n            print(f\"Charging PayPal: {amount + fee}\")\n        elif method == 'bank_transfer':\n            fee = amount * 0.01\n            print(f\"Charging bank transfer: {amount + fee}\")\n        elif method == 'crypto':\n            fee = amount * 0.02\n            print(f\"Charging crypto: {amount + fee}\")\n        elif method == 'apple_pay':\n            fee = amount * 0.025\n            print(f\"Charging Apple Pay: {amount + fee}\")",
+  "ground_truth": {
+    "pattern": "Strategy",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "long-conditional-on-type"
+  ]
+}

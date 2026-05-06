@@ -1,0 +1,16 @@
+{
+  "id": "strategy-fit-010",
+  "pattern": "Strategy",
+  "category": "fit",
+  "complexity": "high",
+  "language": "Go",
+  "source_code": "var serializerMap = map[string]func(interface{}) ([]byte, error){}\n\nfunc RegisterSerializer(name string, fn func(interface{}) ([]byte, error)) {\n    serializerMap[name] = fn\n}\n\nfunc Serialize(data interface{}, format string) ([]byte, error) {\n    fn, ok := serializerMap[format]\n    if !ok {\n        return nil, fmt.Errorf(\"no serializer for %s\", format)\n    }\n    return fn(data)\n}\n\nfunc init() {\n    RegisterSerializer(\"json\", func(v interface{}) ([]byte, error) {\n        return json.Marshal(v)\n    })\n    RegisterSerializer(\"xml\", func(v interface{}) ([]byte, error) {\n        return xml.Marshal(v)\n    })\n    RegisterSerializer(\"protobuf\", func(v interface{}) ([]byte, error) {\n        // complex protobuf logic\n        return nil, nil\n    })\n    RegisterSerializer(\"avro\", func(v interface{}) ([]byte, error) {\n        // avro schema + encode\n        return nil, nil\n    })\n    // Adding new formats requires modifying init() or calling Register\n}",
+  "ground_truth": {
+    "pattern": "Strategy",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "manual-callback-table"
+  ]
+}

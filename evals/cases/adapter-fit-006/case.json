@@ -1,0 +1,17 @@
+{
+  "id": "adapter-fit-006",
+  "pattern": "Adapter",
+  "category": "fit",
+  "complexity": "medium",
+  "language": "Go",
+  "source_code": "// Your cache interface\ntype Cache interface {\n    Get(ctx context.Context, key string) (string, error)\n    Set(ctx context.Context, key string, value string, ttl time.Duration) error\n}\n\n// Third-party Redis client (can't modify)\ntype RedisClient struct { /* ... */ }\n\nfunc (r *RedisClient) Do(ctx context.Context, cmd string, args ...interface{}) (interface{}, error) {\n    // raw Redis command\n}\n\n// Every caller writes this wrapper differently\ntype UserService struct {\n    redis *RedisClient\n}\n\nfunc (s *UserService) GetUser(ctx context.Context, id string) (*User, error) {\n    val, err := s.redis.Do(ctx, \"GET\", \"user:\"+id)\n    if err != nil {\n        return nil, err\n    }\n    if val == nil {\n        return nil, ErrNotFound\n    }\n    var user User\n    json.Unmarshal(val.([]byte), &user)\n    return &user, nil\n}",
+  "ground_truth": {
+    "pattern": "Adapter",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "defensive-wrapper-at-boundary",
+    "incompatible-interface-shape"
+  ]
+}

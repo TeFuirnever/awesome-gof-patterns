@@ -1,0 +1,16 @@
+{
+  "id": "strategy-fit-004",
+  "pattern": "Strategy",
+  "category": "fit",
+  "complexity": "medium",
+  "language": "TypeScript",
+  "source_code": "class FastCompressor extends BaseCompressor {\n  compress(data: Buffer): Buffer {\n    // fast but low ratio\n    return data;\n  }\n  decompress(data: Buffer): Buffer {\n    return data;\n  }\n  getName(): string { return 'fast'; }\n}\n\nclass BalancedCompressor extends BaseCompressor {\n  compress(data: Buffer): Buffer {\n    // balanced speed and ratio\n    return data;\n  }\n  decompress(data: Buffer): Buffer {\n    return data;\n  }\n  getName(): string { return 'balanced'; }\n}\n\nclass MaxCompressor extends BaseCompressor {\n  compress(data: Buffer): Buffer {\n    // max ratio, slow\n    return data;\n  }\n  decompress(data: Buffer): Buffer {\n    return data;\n  }\n  getName(): string { return 'max'; }\n}",
+  "ground_truth": {
+    "pattern": "Strategy",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "parallel-subclass-only-differs-in-one-method"
+  ]
+}

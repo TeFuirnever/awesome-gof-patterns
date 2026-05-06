@@ -12,32 +12,39 @@
  *     --cases-dir evals/cases \
  *     [--n=50] \
  *     [--output evals/results/raw-results.json]
+ *
+ * NOTE: The actual LLM API integration is a TODO. The current implementation
+ * validates the case structure and produces a skeleton results file.
+ * Replace callClaudeAPI() with real Anthropic SDK calls for production use.
  */
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { Command } from 'commander';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import { readdirSync } from 'fs';
 import { spawn } from 'child_process';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const projectRoot = resolve(__dirname, '..', '..');
 const program = new Command();
 
 program
-  .option('--cases-dir <dir>', 'Cases directory', 'evals/cases')
+  .option('--cases-dir <dir>', 'Cases directory (relative to evals/)', 'cases')
   .option('--n <n>', 'Number of cases to evaluate', '50')
-  .option('--output <file>', 'Output file', 'evals/results/raw-results.json')
+  .option('--output <file>', 'Output file (relative to evals/)', 'results/raw-results.json')
   .parse();
 
 const options = program.opts();
 
-// Read cases
+// Read cases (__dirname/.. = evals/)
 const casesDir = resolve(__dirname, '..', options.casesDir);
-import { readdirSync } from 'fs';
 
 const allCases = readdirSync(casesDir, { withFileTypes: true })
   .filter(dirent => dirent.isDirectory())
-  .map(dirent => dirent.name);
+  .map(dirent => dirent.name)
+  .filter(name => name !== 'annotations')
+  .sort();
 
 const n = parseInt(options.n);
 const selectedCases = allCases.slice(0, n);
@@ -50,98 +57,23 @@ if (!existsSync(resultsDir)) {
   mkdirSync(resultsDir, { recursive: true });
 }
 
-// Function to run evaluation for a single case
-async function evaluateCase(caseId) {
-  console.log(`Evaluating case: ${caseId}`);
+// Load skill content for arm C (progressive loading: hub + pattern-specific reference)
+function loadSkillContext(patternName) {
+  const skillPath = resolve(projectRoot, 'pattern-diagnose', 'SKILL.md');
+  const refPath = resolve(projectRoot, 'pattern-diagnose', 'references', `${patternName.toLowerCase()}.md`);
 
-  const caseDir = resolve(casesDir, caseId);
-  const caseFile = readFileSync(resolve(caseDir, 'case.json'), 'utf8');
-  const caseData = JSON.parse(caseFile);
-
-  // Prepare prompts for each arm
-  const prompts = {
-    A: `You are an expert software architecture consultant. Analyze this code and recommend the most appropriate design pattern.
-
-Source code:
-${caseData.source_code}
-
-Your task: Recommend the most suitable design pattern for this code. If no pattern is needed, say "No pattern needed".
-
-What is your recommendation?`,
-    B: `You are an expert software architecture consultant. Analyze this code and recommend the most appropriate design pattern.
-
-Context: The following text is provided for reference. It is unrelated to the code but matches the token count of the skill content.
-
-${generatePlaceboContext(caseData.source_code)}
-
-Source code:
-${caseData.source_code}
-
-Your task: Recommend the most suitable design pattern for this code. If no pattern is needed, say "No pattern needed".
-
-What is your recommendation?`,
-    C: `You are an expert software architecture consultant. Analyze this code and recommend the most appropriate design pattern.
-
-Context: You have access to the following strategy knowledge card:
-
-${readFileSync(resolve(__dirname, '..', 'docs', 'SKILL.md'), 'utf8')}
-
-${readFileSync(resolve(__dirname, '..', 'docs', 'references', 'strategy.md'), 'utf8')}
-
-Source code:
-${caseData.source_code}
-
-Your task: Recommend the most suitable design pattern for this code. If no pattern is needed, say "No pattern needed".
-
-What is your recommendation?`
-  };
-
-  // Run all arms with same random seed
-  const results = {};
-
-  for (const [arm, prompt] of Object.entries(prompts)) {
-    // Run Claude (simulated)
-    const result = await callClaudeAPI(prompt, caseId, arm);
-    results[arm] = result;
+  let context = '';
+  if (existsSync(skillPath)) {
+    context += readFileSync(skillPath, 'utf8');
   }
-
-  return { caseId, results };
+  if (existsSync(refPath)) {
+    context += '\n\n' + readFileSync(refPath, 'utf8');
+  }
+  return context;
 }
 
-// Simulate API call (placeholder - replace with actual API client)
-async function callClaudeAPI(prompt, caseId, arm) {
-  // This is a mock implementation
-  // In practice, you would use the Anthropic SDK
-  const tempDir = resolve(__dirname, '..', 'results', 'temp');
-  if (!existsSync(tempDir)) {
-    mkdirSync(tempDir, { recursive: true });
-  }
-
-  // For demo, we'll simulate responses based on ground truth
-  const caseFile = readFileSync(resolve(casesDir, caseId, 'case.json'), 'utf8');
-  const caseData = JSON.parse(caseFile);
-
-  // Simulate some randomness
-  const random = Math.random();
-
-  // Simple simulation: 60% accuracy for A, 70% for B, 85% for C
-  let accuracy = 0.6;
-  if (arm === 'B') accuracy = 0.7;
-  if (arm === 'C') accuracy = 0.85;
-
-  const top1_correct = random < accuracy &&
-    (caseData.ground_truth.pattern === 'Strategy' || Math.random() < 0.8);
-
-  return {
-    top1_correct,
-    recommendation: generateMockRecommendation(caseData, arm, top1_correct),
-    antipatterns: top1_correct ? generateMockAntipatterns() : []
-  };
-}
-
-// Generate placebo context
-function generatePlaceboContext(sourceCode) {
-  const tokenLength = Math.floor(sourceCode.length / 4);
+// Generate placebo context (token-matched unrelated text)
+function generatePlaceboContext(tokenTarget) {
   const sentences = [
     "Preheat oven to 350°F (175°C).",
     "Mix flour, sugar, and baking powder in a large bowl.",
@@ -163,19 +95,110 @@ function generatePlaceboContext(sourceCode) {
   const context = [];
   let currentLength = 0;
 
-  while (currentLength < tokenCount) {
+  while (currentLength < tokenTarget * 4) {
     const sentence = sentences[Math.floor(Math.random() * sentences.length)];
-    if (currentLength + sentence.length <= tokenLength + 100) {
-      context.push(sentence);
-      currentLength += sentence.length;
-    } else {
-      break;
-    }
+    context.push(sentence);
+    currentLength += sentence.length;
   }
 
   return context.join(' ');
 }
 
+// Build prompts for each arm
+function buildPrompts(caseData) {
+  const patternName = caseData.pattern || 'strategy';
+  const skillContext = loadSkillContext(patternName);
+  const tokenEstimate = Math.floor(skillContext.length / 4);
+  const placebo = generatePlaceboContext(tokenEstimate);
+
+  const basePrompt = `You are an expert software architecture consultant. Analyze this code and recommend the most appropriate GoF design pattern.
+
+Source code:
+${caseData.source_code}
+
+Your task: Recommend the most suitable design pattern for this code. If no pattern is needed, say "No pattern needed".
+
+What is your recommendation? Include:
+1. The pattern name (or "No pattern needed")
+2. A brief rationale (1-2 sentences)
+3. Any applicable anti-patterns (when NOT to apply this pattern)`;
+
+  return {
+    A: basePrompt,
+    B: `You are an expert software architecture consultant. Analyze this code and recommend the most appropriate GoF design pattern.
+
+Context: The following text is provided for reference. It is unrelated to the code but matches the token count of the skill content.
+
+${placebo}
+
+Source code:
+${caseData.source_code}
+
+Your task: Recommend the most suitable design pattern for this code. If no pattern is needed, say "No pattern needed".
+
+What is your recommendation? Include:
+1. The pattern name (or "No pattern needed")
+2. A brief rationale (1-2 sentences)
+3. Any applicable anti-patterns (when NOT to apply this pattern)`,
+    C: `You are an expert software architecture consultant. Analyze this code and recommend the most appropriate GoF design pattern.
+
+Context: You have access to the following pattern-diagnose skill knowledge:
+
+${skillContext}
+
+Source code:
+${caseData.source_code}
+
+Your task: Recommend the most suitable design pattern for this code. If no pattern is needed, say "No pattern needed".
+
+What is your recommendation? Include:
+1. The pattern name (or "No pattern needed")
+2. A brief rationale (1-2 sentences)
+3. Any applicable anti-patterns (when NOT to apply this pattern)`
+  };
+}
+
+/**
+ * TODO: Replace this with real Anthropic SDK calls.
+ *
+ * Production implementation should:
+ * 1. Use the Anthropic SDK (or HTTP API) to call Claude
+ * 2. Use temperature=0 and a fixed seed per case
+ * 3. Run 5 independent calls per arm for self-consistency
+ * 4. Use majority vote for the final answer
+ * 5. Parse the response to extract pattern name, anti-patterns, and rationale
+ */
+async function callClaudeAPI(prompt, caseId, arm) {
+  // Placeholder: read case ground truth for validation structure only
+  const caseFile = readFileSync(resolve(casesDir, caseId, 'case.json'), 'utf8');
+  const caseData = JSON.parse(caseFile);
+
+  console.log(`  [${arm}] ${caseId} - SKIPPED (no API key configured)`);
+
+  return {
+    top1_correct: null,
+    recommendation: null,
+    antipatterns: [],
+    note: 'Placeholder result — integrate Anthropic SDK for production use'
+  };
+}
+
+// Evaluate a single case
+async function evaluateCase(caseId) {
+  console.log(`Evaluating case: ${caseId}`);
+
+  const caseFile = readFileSync(resolve(casesDir, caseId, 'case.json'), 'utf8');
+  const caseData = JSON.parse(caseFile);
+
+  const prompts = buildPrompts(caseData);
+  const results = {};
+
+  for (const [arm, prompt] of Object.entries(prompts)) {
+    results[arm] = await callClaudeAPI(prompt, caseId, arm);
+  }
+
+  return { caseId, results };
+}
 
 // Main execution
 async function main() {
@@ -190,29 +213,37 @@ async function main() {
   const outputPath = resolve(__dirname, '..', options.output);
   writeFileSync(outputPath, JSON.stringify(allResults, null, 2) + '\n');
 
-  console.log(`Evaluation complete! Results saved to ${outputPath}`);
+  console.log(`\nEvaluation complete! Results saved to ${outputPath}`);
+  console.log('NOTE: Results are placeholders. Integrate Anthropic SDK for real evaluation.');
 
-  // Run bootstrap CI
-  console.log("\nComputing confidence intervals...");
-  await new Promise(resolve => {
-    const child = spawn('node', [__dirname + '/bootstrap-ci.mjs'], {
-      stdio: 'inherit'
-    });
-    child.on('close', resolve);
-  });
+  // Run bootstrap CI if we have real results
+  const hasRealResults = Object.values(allResults).some(
+    arms => arms.C?.top1_correct !== null
+  );
 
-  // If ground truth annotations exist, compute reliability
-  const annotationsDir = resolve(__dirname, '..', 'cases', 'annotations');
-  if (existsSync(annotationsDir)) {
-    console.log("\nComputing annotation reliability...");
+  if (hasRealResults) {
+    console.log("\nComputing confidence intervals...");
     await new Promise(resolve => {
-      const child = spawn('node', [__dirname + '/ground-truth-kappa.mjs'], {
+      const child = spawn('node', [__dirname + '/bootstrap-ci.mjs'], {
         stdio: 'inherit'
       });
       child.on('close', resolve);
     });
+
+    // Compute annotation reliability if available
+    const annotationsDir = resolve(__dirname, '..', 'cases', 'annotations');
+    if (existsSync(annotationsDir)) {
+      console.log("\nComputing annotation reliability...");
+      await new Promise(resolve => {
+        const child = spawn('node', [__dirname + '/ground-truth-kappa.mjs'], {
+          stdio: 'inherit'
+        });
+        child.on('close', resolve);
+      });
+    }
+  } else {
+    console.log("\nSkipping bootstrap CI (no real results to analyze).");
   }
 }
 
-// Run main
 main().catch(console.error);

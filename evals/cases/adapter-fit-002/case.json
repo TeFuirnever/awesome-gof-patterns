@@ -1,0 +1,16 @@
+{
+  "id": "adapter-fit-002",
+  "pattern": "Adapter",
+  "category": "fit",
+  "complexity": "medium",
+  "language": "Python",
+  "source_code": "# Legacy system uses callbacks\nclass LegacyPaymentGateway:\n    def charge(self, amount, on_success, on_failure):\n        try:\n            result = self._call_api(amount)\n            on_success(result)\n        except Exception as e:\n            on_failure(str(e))\n\n# New system expects async/await with Result type\nclass PaymentResult:\n    def __init__(self, success, transaction_id=None, error=None):\n        self.success = success\n        self.transaction_id = transaction_id\n        self.error = error\n\n# Current code: glue scattered everywhere\nclass CheckoutService:\n    def process_payment(self, amount):\n        result_holder = {'value': None}\n\n        def on_success(tx_id):\n            result_holder['value'] = PaymentResult(True, tx_id)\n\n        def on_failure(err):\n            result_holder['value'] = PaymentResult(False, error=err)\n\n        self.gateway.charge(amount, on_success, on_failure)\n        return result_holder['value']\n\n    def refund(self, amount):\n        result_holder = {'value': None}\n\n        def on_success(tx_id):\n            result_holder['value'] = PaymentResult(True, tx_id)\n\n        def on_failure(err):\n            result_holder['value'] = PaymentResult(False, error=err)\n\n        self.gateway.charge(-amount, on_success, on_failure)\n        return result_holder['value']",
+  "ground_truth": {
+    "pattern": "Adapter",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "glue-code-accumulation"
+  ]
+}

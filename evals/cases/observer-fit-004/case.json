@@ -1,0 +1,16 @@
+{
+  "id": "observer-fit-004",
+  "pattern": "Observer",
+  "category": "fit",
+  "complexity": "medium",
+  "language": "TypeScript",
+  "source_code": "class OrderService {\n  private logger = new Logger();\n  private notifier = new EmailNotifier();\n  private analytics = new AnalyticsTracker();\n  private inventory = new InventoryManager();\n\n  placeOrder(order: Order): void {\n    // ... business logic ...\n    this.saveToDb(order);\n\n    // Direct calls to specific consumers - tight coupling\n    this.logger.logOrder(order);\n    this.notifier.sendConfirmation(order.customerEmail, order.id);\n    this.analytics.trackPurchase(order.total, order.items);\n    this.inventory.reserveStock(order.items);\n  }\n}\n\n// Adding a new consumer (e.g., SMS notifier, fraud checker)\n// requires modifying OrderService.placeOrder() directly.",
+  "ground_truth": {
+    "pattern": "Observer",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "tight-coupling-on-notification"
+  ]
+}

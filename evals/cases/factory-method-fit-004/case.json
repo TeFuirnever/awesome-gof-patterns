@@ -1,0 +1,16 @@
+{
+  "id": "factory-method-fit-004",
+  "pattern": "FactoryMethod",
+  "category": "fit",
+  "complexity": "low",
+  "language": "TypeScript",
+  "source_code": "abstract class NotificationSender {\n  abstract send(recipient: string, message: string): void;\n\n  // High-level code directly instantiates concrete dependencies\n  createTransport(): Transport {\n    if (this.config.useQueue) {\n      return new RabbitMqTransport(this.config.queueUrl);\n    } else {\n      return new SmtpTransport(this.config.smtpHost, this.config.smtpPort);\n    }\n  }\n}",
+  "ground_truth": {
+    "pattern": "FactoryMethod",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "new-concrete-in-interface"
+  ]
+}

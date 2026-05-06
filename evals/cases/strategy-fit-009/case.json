@@ -1,0 +1,16 @@
+{
+  "id": "strategy-fit-009",
+  "pattern": "Strategy",
+  "category": "fit",
+  "complexity": "medium",
+  "language": "TypeScript",
+  "source_code": "class NotificationService {\n  send(channel: string, message: string): void {\n    if (channel === 'email') {\n      const smtp = this.connectSMTP();\n      smtp.send({ to: this.recipient, body: message });\n    } else if (channel === 'sms') {\n      const twilio = this.initTwilio();\n      twilio.messages.create({ to: this.phone, body: message });\n    } else if (channel === 'push') {\n      const fcm = this.getFCMToken();\n      this.pushToFCM(fcm, { title: 'Notification', body: message });\n    } else if (channel === 'slack') {\n      const webhook = this.getSlackWebhook();\n      fetch(webhook, { method: 'POST', body: JSON.stringify({ text: message }) });\n    } else if (channel === 'webhook') {\n      this.httpPost(this.webhookUrl, { event: this.eventType, message });\n    } else {\n      throw new Error(`Unsupported channel: ${channel}`);\n    }\n  }\n}",
+  "ground_truth": {
+    "pattern": "Strategy",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "long-conditional-on-type"
+  ]
+}

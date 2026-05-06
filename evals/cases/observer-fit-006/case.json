@@ -1,0 +1,16 @@
+{
+  "id": "observer-fit-006",
+  "pattern": "Observer",
+  "category": "fit",
+  "complexity": "medium",
+  "language": "Go",
+  "source_code": "type ConfigManager struct {\n    current Config\n    watchers []func(Config)\n}\n\nfunc (cm *ConfigManager) Update(newCfg Config) {\n    cm.current = newCfg\n    for _, w := range cm.watchers {\n        w(newCfg)\n    }\n}\n\nfunc (cm *ConfigManager) Watch(fn func(Config)) {\n    cm.watchers = append(cm.watchers, fn)\n}\n\n// Each service polls config or registers a watcher\ncm.Watch(func(cfg Config) {\n    dbPool.SetMaxConnections(cfg.MaxDBConn)\n})\ncm.Watch(func(cfg Config) {\n    cache.SetTTL(cfg.CacheTTL)\n})\ncm.Watch(func(cfg Config) {\n    logger.SetLevel(cfg.LogLevel)\n})\ncm.Watch(func(cfg Config) {\n    rateLimit.SetLimit(cfg.RateLimit)\n})",
+  "ground_truth": {
+    "pattern": "Observer",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "manual-listener-list"
+  ]
+}

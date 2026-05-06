@@ -1,0 +1,18 @@
+{
+  "id": "strategy-anti-001",
+  "pattern": "Strategy",
+  "category": "anti",
+  "complexity": "low",
+  "language": "Python",
+  "source_code": "class Greeter:\n    def greet(self, formality, name):\n        if formality == 'formal':\n            return f\"Good day, {name}.\"\n        else:\n            return f\"Hey, {name}!\"",
+  "ground_truth": {
+    "pattern": "none",
+    "anti_patterns": [
+      "only-one-variant",
+      "stateless-trivial-algorithm"
+    ],
+    "refactoring_steps_valid": false
+  },
+  "expected_smells": [],
+  "anti_reason": "Only 2 branches with trivial logic. A simple function parameter suffices."
+}

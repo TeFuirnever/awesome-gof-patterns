@@ -1,0 +1,16 @@
+{
+  "id": "observer-fit-003",
+  "pattern": "Observer",
+  "category": "fit",
+  "complexity": "low",
+  "language": "Go",
+  "source_code": "type EventBus struct {\n    handlers []func(string, interface{})\n}\n\nfunc (eb *EventBus) Subscribe(fn func(string, interface{})) {\n    eb.handlers = append(eb.handlers, fn)\n}\n\nfunc (eb *EventBus) Emit(event string, data interface{}) {\n    for _, handler := range eb.handlers {\n        handler(event, data)\n    }\n}\n\n// Direct usage scattered across the codebase\nbus := &EventBus{}\nbus.Subscribe(func(evt string, data interface{}) {\n    fmt.Printf(\"[LOG] %s: %v\\n\", evt, data)\n})\nbus.Subscribe(func(evt string, data interface{}) {\n    metrics.Increment(evt)\n})\nbus.Subscribe(func(evt string, data interface{}) {\n    cache.Invalidate(evt)\n})\nbus.Subscribe(func(evt string, data interface{}) {\n    webhook.Notify(evt, data)\n})",
+  "ground_truth": {
+    "pattern": "Observer",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "manual-listener-list"
+  ]
+}

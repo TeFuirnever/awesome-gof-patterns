@@ -1,0 +1,16 @@
+{
+  "id": "observer-fit-008",
+  "pattern": "Observer",
+  "category": "fit",
+  "complexity": "low",
+  "language": "Python",
+  "source_code": "class TemperatureSensor:\n    def __init__(self):\n        self._observers = []\n\n    def add_observer(self, callback):\n        self._observers.append(callback)\n\n    def temperature_changed(self, new_temp):\n        for obs in self._observers:\n            obs(new_temp)\n\n# Multiple consumers need to react\nsensor = TemperatureSensor()\nsensor.add_observer(lambda t: display.update(t))\nsensor.add_observer(lambda t: database.insert(t))\nsensor.add_observer(lambda t: alarm.check(t))",
+  "ground_truth": {
+    "pattern": "Observer",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "manual-listener-list"
+  ]
+}

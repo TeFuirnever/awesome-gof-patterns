@@ -1,0 +1,17 @@
+{
+  "id": "adapter-fit-004",
+  "pattern": "Adapter",
+  "category": "fit",
+  "complexity": "medium",
+  "language": "TypeScript",
+  "source_code": "// Third-party weather API you can't modify\nclass OpenWeatherClient {\n  async getCurrentWeather(city: string): Promise<{\n    weather: Array<{ main: string; description: string }>;\n    main: { temp: number; humidity: number; pressure: number };\n    wind: { speed: number; deg: number };\n    dt: number;\n  }> { /* ... */ }\n}\n\n// Your system expects this shape\ninterface WeatherReport {\n  temperature: number;\n  conditions: string;\n  windSpeed: number;\n  timestamp: Date;\n}\n\n// Translation code scattered across 3 services\nclass WeatherDashboard {\n  constructor(private client: OpenWeatherClient) {}\n\n  async getReport(city: string): Promise<WeatherReport> {\n    const raw = await this.client.getCurrentWeather(city);\n    return {\n      temperature: raw.main.temp,\n      conditions: raw.weather[0]?.main ?? 'unknown',\n      windSpeed: raw.wind.speed,\n      timestamp: new Date(raw.dt * 1000),\n    };\n  }\n}\n\nclass WeatherAlerts {\n  constructor(private client: OpenWeatherClient) {}\n\n  async checkAlerts(city: string) {\n    const raw = await this.client.getCurrentWeather(city);\n    const temp = raw.main.temp;\n    const wind = raw.wind.speed;\n    // duplicated field mapping\n    if (temp > 40) this.alert('Heat warning');\n    if (wind > 20) this.alert('Wind warning');\n  }\n}",
+  "ground_truth": {
+    "pattern": "Adapter",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "glue-code-accumulation",
+    "defensive-wrapper-at-boundary"
+  ]
+}

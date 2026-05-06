@@ -1,0 +1,16 @@
+{
+  "id": "strategy-fit-007",
+  "pattern": "Strategy",
+  "category": "fit",
+  "complexity": "low",
+  "language": "Go",
+  "source_code": "func exportData(data []Record, format string) ([]byte, error) {\n    switch format {\n    case \"csv\":\n        var buf bytes.Buffer\n        for _, r := range data {\n            buf.WriteString(fmt.Sprintf(\"%s,%s,%d\\n\", r.Name, r.Email, r.Age))\n        }\n        return buf.Bytes(), nil\n    case \"json\":\n        return json.Marshal(data)\n    case \"xml\":\n        return xml.Marshal(data)\n    case \"yaml\":\n        return yaml.Marshal(data)\n    default:\n        return nil, fmt.Errorf(\"unsupported format: %s\", format)\n    }\n}",
+  "ground_truth": {
+    "pattern": "Strategy",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "long-conditional-on-type"
+  ]
+}

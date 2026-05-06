@@ -1,0 +1,16 @@
+{
+  "id": "factory-method-fit-003",
+  "pattern": "FactoryMethod",
+  "category": "fit",
+  "complexity": "medium",
+  "language": "Go",
+  "source_code": "func NewExporter(format string, config Config) (Exporter, error) {\n    switch format {\n    case \"pdf\":\n        return NewPdfExporter(config.TemplatePath, config.FontDir, config.Logo), nil\n    case \"xlsx\":\n        return NewXlsxExporter(config.StyleSheet), nil\n    case \"csv\":\n        return NewCsvExporter(config.Delimiter), nil\n    case \"docx\":\n        return NewDocxExporter(config.TemplatePath), nil\n    default:\n        return nil, fmt.Errorf(\"unsupported export format: %s\", format)\n    }\n}",
+  "ground_truth": {
+    "pattern": "FactoryMethod",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "conditional-construction"
+  ]
+}

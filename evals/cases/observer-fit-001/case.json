@@ -1,0 +1,16 @@
+{
+  "id": "observer-fit-001",
+  "pattern": "Observer",
+  "category": "fit",
+  "complexity": "low",
+  "language": "TypeScript",
+  "source_code": "class StockTicker {\n  private listeners: Array<(price: number) => void> = [];\n\n  addListener(fn: (price: number) => void) {\n    this.listeners.push(fn);\n  }\n\n  onPriceUpdate(symbol: string, price: number) {\n    for (const fn of this.listeners) {\n      fn(price);\n    }\n  }\n}\n\n// Usage: multiple systems need the price update\nticker.addListener(price => chart.redraw(price));\nticker.addListener(price => alertSystem.checkThreshold(price));\nticker.addListener(price => auditLog.record(symbol, price));\nticker.addListener(price => portfolio.recalculate(symbol, price));",
+  "ground_truth": {
+    "pattern": "Observer",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "manual-listener-list"
+  ]
+}

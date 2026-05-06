@@ -1,0 +1,17 @@
+{
+  "id": "factory-method-fit-002",
+  "pattern": "FactoryMethod",
+  "category": "fit",
+  "complexity": "medium",
+  "language": "Python",
+  "source_code": "class DatabaseService:\n    def __init__(self, config):\n        self.config = config\n        # Directly creates concrete type based on config\n        if config.db_type == 'postgres':\n            self.connection = PostgresConnection(config.host, config.port)\n        elif config.db_type == 'mysql':\n            self.connection = MySqlConnection(config.host, config.port)\n        elif config.db_type == 'sqlite':\n            self.connection = SqliteConnection(config.path)\n        elif config.db_type == 'mongodb':\n            self.connection = MongoConnection(config.uri)\n\n        # Also directly creates logger - too many responsibilities\n        self.logger = FileLogger(config.log_path)\n        self.metrics = PrometheusMetrics(config.metrics_url)\n\n    def query(self, sql):\n        result = self.connection.execute(sql)\n        self.logger.log(sql)\n        self.metrics.record('query')\n        return result",
+  "ground_truth": {
+    "pattern": "FactoryMethod",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "conditional-construction",
+    "constructor-knows-too-much"
+  ]
+}

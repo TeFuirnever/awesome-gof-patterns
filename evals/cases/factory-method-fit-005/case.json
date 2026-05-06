@@ -1,0 +1,18 @@
+{
+  "id": "factory-method-fit-005",
+  "pattern": "FactoryMethod",
+  "category": "fit",
+  "complexity": "high",
+  "language": "Python",
+  "source_code": "class PluginManager:\n    def __init__(self, plugin_dir):\n        self.plugins = {}\n        self.logger = FileLogger(\"plugins.log\")  # hardcoded concrete\n        self.loader = YamlLoader(plugin_dir)       # hardcoded concrete\n        self.validator = SchemaValidator()          # hardcoded concrete\n\n        for name in self.loader.discover():\n            plugin = self._create_plugin(name)\n            if self.validator.validate(plugin):\n                self.plugins[name] = plugin\n                self.logger.info(f\"Loaded plugin: {name}\")\n\n    def _create_plugin(self, name):\n        if name.endswith('.py'):\n            return PythonPlugin(name)\n        elif name.endswith('.js'):\n            return JavaScriptPlugin(name)\n        elif name.endswith('.wasm'):\n            return WasmPlugin(name)\n        else:\n            return NativePlugin(name)\n\n    def execute(self, name, *args):\n        return self.plugins[name].run(*args)",
+  "ground_truth": {
+    "pattern": "FactoryMethod",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "new-concrete-in-interface",
+    "conditional-construction",
+    "constructor-knows-too-much"
+  ]
+}

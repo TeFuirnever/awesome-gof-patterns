@@ -1,0 +1,16 @@
+{
+  "id": "observer-fit-002",
+  "pattern": "Observer",
+  "category": "fit",
+  "complexity": "medium",
+  "language": "Python",
+  "source_code": "import time\n\nclass SensorReader:\n    def __init__(self):\n        self.last_temp = None\n        self.last_humidity = None\n\n    def read_loop(self):\n        while True:\n            temp = self._read_temperature()\n            humidity = self._read_humidity()\n            time.sleep(1)\n\n    def _read_temperature(self):\n        # read from hardware\n        return 23.5\n\n    def _read_humidity(self):\n        # read from hardware\n        return 45.0\n\n# Consumer: polling instead of being notified\nclass DisplayPanel:\n    def __init__(self, sensor: SensorReader):\n        self.sensor = sensor\n\n    def update_loop(self):\n        last = None\n        while True:\n            if self.sensor.last_temp != last:\n                self.render(self.sensor.last_temp)\n                last = self.sensor.last_temp\n            time.sleep(0.5)\n\nclass DataLogger:\n    def __init__(self, sensor: SensorReader):\n        self.sensor = sensor\n\n    def poll_loop(self):\n        last_temp = None\n        while True:\n            if self.sensor.last_temp != last_temp:\n                self.log(self.sensor.last_temp)\n                last_temp = self.sensor.last_temp\n            time.sleep(0.5)",
+  "ground_truth": {
+    "pattern": "Observer",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "polling-for-state-change"
+  ]
+}

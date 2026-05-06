@@ -1,0 +1,17 @@
+{
+  "id": "observer-anti-002",
+  "pattern": "Observer",
+  "category": "anti",
+  "complexity": "medium",
+  "language": "TypeScript",
+  "source_code": "import { EventEmitter } from 'events';\n\nclass DataPipeline extends EventEmitter {}\n\nconst pipeline = new DataPipeline();\n\npipeline.on('data', (chunk) => transform(chunk));\npipeline.on('data', (chunk) => validate(chunk));\npipeline.on('data', (chunk) => store(chunk));\n\n// B must run after A completes, but EventEmitter gives no ordering guarantee\n// If validation fails, transform should not have run yet\n// Need Mediator or sequential pipeline, not Observer",
+  "ground_truth": {
+    "pattern": "none",
+    "anti_patterns": [
+      "event-order-dependency"
+    ],
+    "refactoring_steps_valid": false
+  },
+  "expected_smells": [],
+  "anti_reason": "Processing steps have causal ordering dependencies. Observer does not guarantee notification order. A pipeline/mediator pattern is more appropriate."
+}

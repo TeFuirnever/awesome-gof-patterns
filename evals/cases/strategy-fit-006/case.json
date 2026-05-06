@@ -1,0 +1,16 @@
+{
+  "id": "strategy-fit-006",
+  "pattern": "Strategy",
+  "category": "fit",
+  "complexity": "high",
+  "language": "TypeScript",
+  "source_code": "type ValidationFn = (input: string) => boolean;\n\nconst validators: Record<string, ValidationFn> = {};\nlet nextId = 0;\n\nfunction registerValidator(name: string, fn: ValidationFn) {\n  validators[name] = fn;\n  nextId++;\n}\n\nfunction validate(input: string, type: string): boolean {\n  const fn = validators[type];\n  if (!fn) throw new Error(`No validator for ${type}`);\n  return fn(input);\n}\n\n// Registration scattered across files\nregisterValidator('email', (s) => /.*@.*/.test(s));\nregisterValidator('phone', (s) => /^\\d{10}$/.test(s));\nregisterValidator('zip', (s) => /^\\d{5}$/.test(s));\nregisterValidator('ssn', (s) => /^\\d{3}-\\d{2}-\\d{4}$/.test(s));\nregisterValidator('credit', (s) => /^\\d{16}$/.test(s));\n\n// Adding a new validator requires modifying dispatch logic\n// and there's no shared interface for validator behavior\nclass ValidationService {\n  validateAll(input: string, types: string[]): Record<string, boolean> {\n    const results: Record<string, boolean> = {};\n    for (const type of types) {\n      if (validators[type]) {\n        results[type] = validators[type](input);\n      }\n    }\n    return results;\n  }\n}",
+  "ground_truth": {
+    "pattern": "Strategy",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "manual-callback-table"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": "observer-fit-007",
+  "pattern": "Observer",
+  "category": "fit",
+  "complexity": "high",
+  "language": "TypeScript",
+  "source_code": "class TaskRunner {\n  private running = true;\n\n  async run(task: Task): Promise<void> {\n    this.saveStatus(task.id, 'running');\n\n    while (this.running) {\n      const progress = await this.executeStep(task);\n      this.saveProgress(task.id, progress);\n\n      // UI has to poll the DB to see progress\n      await sleep(1000);\n    }\n\n    this.saveStatus(task.id, 'completed');\n    this.notifyCompletion(task); // only one direct notification\n  }\n}\n\n// Frontend polls every 2 seconds to check progress\nclass TaskDashboard {\n  startPolling(taskId: string) {\n    setInterval(async () => {\n      const progress = await fetch(`/api/tasks/${taskId}/progress`);\n      this.updateBar(await progress.json());\n    }, 2000);\n  }\n}\n\nclass TaskAlerts {\n  startPolling(taskId: string) {\n    setInterval(async () => {\n      const status = await fetch(`/api/tasks/${taskId}/status`);\n      if ((await status.json()).status === 'completed') {\n        this.showNotification('Task done!');\n      }\n    }, 2000);\n  }\n}",
+  "ground_truth": {
+    "pattern": "Observer",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "polling-for-state-change"
+  ]
+}

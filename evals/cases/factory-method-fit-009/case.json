@@ -1,0 +1,17 @@
+{
+  "id": "factory-method-fit-009",
+  "pattern": "FactoryMethod",
+  "category": "fit",
+  "complexity": "high",
+  "language": "Go",
+  "source_code": "type HandlerFactory struct {\n    middleware []Middleware\n    logger    *zap.Logger\n}\n\nfunc (hf *HandlerFactory) CreateHandler(route string) http.Handler {\n    var handler http.Handler\n\n    switch route {\n    case \"/api/users\":\n        db := postgres.New(hf.dbURL)     // creates concrete in factory\n        repo := users.NewRepository(db)\n        service := users.NewService(repo)\n        handler = users.NewHandler(service)\n    case \"/api/orders\":\n        db := mysql.New(hf.dbURL)        // different concrete\n        repo := orders.NewRepository(db)\n        service := orders.NewService(repo)\n        handler = orders.NewHandler(service)\n    case \"/api/products\":\n        cache := redis.New(hf.cacheURL)  // creates concrete in factory\n        repo := products.NewCachedRepo(cache)\n        service := products.NewService(repo)\n        handler = products.NewHandler(service)\n    }\n\n    for i := len(hf.middleware) - 1; i >= 0; i-- {\n        handler = hf.middleware[i](handler)\n    }\n    return handler\n}",
+  "ground_truth": {
+    "pattern": "FactoryMethod",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "new-concrete-in-interface",
+    "conditional-construction"
+  ]
+}

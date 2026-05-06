@@ -1,0 +1,18 @@
+{
+  "id": "adapter-fit-005",
+  "pattern": "Adapter",
+  "category": "fit",
+  "complexity": "high",
+  "language": "Python",
+  "source_code": "# External REST API returns XML (you can't change it)\nclass LegacyCRMClient:\n    def get_customer(self, customer_id):\n        xml = self._http_get(f\"/customers/{customer_id}\")\n        root = ET.fromstring(xml)\n        return {\n            'id': root.find('CustomerID').text,\n            'name': root.find('FullName').text,\n            'email': root.find('EmailAddress').text,\n            'phone': root.find('PhoneNumber').text,\n        }\n\n    def update_customer(self, data):\n        xml = f'''<Customer>\n            <CustomerID>{data['id']}</CustomerID>\n            <FullName>{data['name']}</FullName>\n            <EmailAddress>{data['email']}</EmailAddress>\n            <PhoneNumber>{data['phone']}</PhoneNumber>\n        </Customer>'''\n        self._http_put(f\"/customers/{data['id']}\", xml)\n\n# Your system uses Customer objects with snake_case attributes\n# Translation between dict<->xml scattered in every service that touches CRM\nclass CustomerService:\n    def sync_from_crm(self, customer_id):\n        raw = self.crm.get_customer(customer_id)\n        customer = Customer(\n            external_id=raw['id'],\n            display_name=raw['name'],\n            contact_email=raw['email'],\n            phone_number=raw['phone'],\n        )\n        self.db.save(customer)\n\n    def push_to_crm(self, customer):\n        self.crm.update_customer({\n            'id': customer.external_id,\n            'name': customer.display_name,\n            'email': customer.contact_email,\n            'phone': customer.phone_number,\n        })",
+  "ground_truth": {
+    "pattern": "Adapter",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "incompatible-interface-shape",
+    "glue-code-accumulation",
+    "defensive-wrapper-at-boundary"
+  ]
+}

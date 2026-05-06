@@ -1,0 +1,16 @@
+{
+  "id": "strategy-fit-005",
+  "pattern": "Strategy",
+  "category": "fit",
+  "complexity": "medium",
+  "language": "Python",
+  "source_code": "class RoutePlanner:\n    def find_route(self, start, end, mode):\n        if mode == 'driving':\n            return self._driving_route(start, end)\n        elif mode == 'walking':\n            return self._walking_route(start, end)\n        elif mode == 'cycling':\n            return self._cycling_route(start, end)\n        elif mode == 'transit':\n            return self._transit_route(start, end)\n        elif mode == 'ride_share':\n            return self._rideshare_route(start, end)\n\n    def _driving_route(self, s, e):\n        return f\"Driving from {s} to {e} via highway\"\n\n    def _walking_route(self, s, e):\n        return f\"Walking from {s} to {e} via footpaths\"\n\n    def _cycling_route(self, s, e):\n        return f\"Cycling from {s} to {e} via bike lanes\"\n\n    def _transit_route(self, s, e):\n        return f\"Transit from {s} to {e} via bus/train\"\n\n    def _rideshare_route(self, s, e):\n        return f\"Rideshare pickup at {s}, drop at {e}\"",
+  "ground_truth": {
+    "pattern": "Strategy",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "long-conditional-on-type"
+  ]
+}

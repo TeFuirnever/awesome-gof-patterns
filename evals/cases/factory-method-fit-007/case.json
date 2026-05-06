@@ -1,0 +1,16 @@
+{
+  "id": "factory-method-fit-007",
+  "pattern": "FactoryMethod",
+  "category": "fit",
+  "complexity": "low",
+  "language": "Python",
+  "source_code": "class LoggerFactory:\n    _loggers = {}\n\n    @staticmethod\n    def create_logger(name, level=\"INFO\"):\n        if name in LoggerFactory._loggers:\n            return LoggerFactory._loggers[name]\n\n        if name == \"app\":\n            logger = FileLogger(\"app.log\", level)\n        elif name == \"access\":\n            logger = FileLogger(\"access.log\", level)\n        elif name == \"error\":\n            logger = RemoteLogger(\"errors.example.com\", level)\n        elif name == \"audit\":\n            logger = DatabaseLogger(level)\n        else:\n            logger = ConsoleLogger(level)\n\n        LoggerFactory._loggers[name] = logger\n        return logger",
+  "ground_truth": {
+    "pattern": "FactoryMethod",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "conditional-construction"
+  ]
+}

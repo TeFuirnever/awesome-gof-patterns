@@ -1,0 +1,16 @@
+{
+  "id": "factory-method-fit-010",
+  "pattern": "FactoryMethod",
+  "category": "fit",
+  "complexity": "low",
+  "language": "Python",
+  "source_code": "class ReportGenerator:\n    def generate(self, data, output_format):\n        if output_format == 'html':\n            renderer = HtmlRenderer()\n            template = HtmlTemplate(\"report.html\")\n        elif output_format == 'pdf':\n            renderer = PdfRenderer()\n            template = PdfTemplate(\"report.pdf\")\n        elif output_format == 'markdown':\n            renderer = MarkdownRenderer()\n            template = MdTemplate(\"report.md\")\n\n        styled = renderer.apply_style(data, template)\n        return renderer.render(styled)",
+  "ground_truth": {
+    "pattern": "FactoryMethod",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "conditional-construction"
+  ]
+}

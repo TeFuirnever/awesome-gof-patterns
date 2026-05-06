@@ -1,0 +1,16 @@
+{
+  "id": "strategy-fit-001",
+  "pattern": "Strategy",
+  "category": "fit",
+  "complexity": "low",
+  "language": "TypeScript",
+  "source_code": "class PriceCalculator {\n  calculate(order: { customerType: string; amount: number }): number {\n    if (order.customerType === 'regular') {\n      return order.amount;\n    } else if (order.customerType === 'premium') {\n      return order.amount * 0.9;\n    } else if (order.customerType === 'vip') {\n      return order.amount * 0.8;\n    } else if (order.customerType === 'employee') {\n      return order.amount * 0.7;\n    } else if (order.customerType === 'wholesale') {\n      return order.amount * 0.6;\n    }\n    throw new Error('Unknown customer type');\n  }\n}",
+  "ground_truth": {
+    "pattern": "Strategy",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "long-conditional-on-type"
+  ]
+}

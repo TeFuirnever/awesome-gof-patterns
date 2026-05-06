@@ -1,0 +1,17 @@
+{
+  "id": "strategy-anti-002",
+  "pattern": "Strategy",
+  "category": "anti",
+  "complexity": "medium",
+  "language": "TypeScript",
+  "source_code": "abstract class Shape {\n  abstract draw(renderer: Canvas): void;\n  abstract area(): number;\n  abstract perimeter(): number;\n}\n\nclass Circle extends Shape {\n  constructor(private radius: number) { super(); }\n  draw(r: Canvas) { r.circle(0, 0, this.radius); }\n  area() { return Math.PI * this.radius ** 2; }\n  perimeter() { return 2 * Math.PI * this.radius; }\n}\n\nclass Rectangle extends Shape {\n  constructor(private w: number, private h: number) { super(); }\n  draw(r: Canvas) { r.rect(0, 0, this.w, this.h); }\n  area() { return this.w * this.h; }\n  perimeter() { return 2 * (this.w + this.h); }\n}",
+  "ground_truth": {
+    "pattern": "none",
+    "anti_patterns": [
+      "replace-simple-polymorphism"
+    ],
+    "refactoring_steps_valid": false
+  },
+  "expected_smells": [],
+  "anti_reason": "Already has reasonable polymorphism via Shape abstract class. Strategy would just move methods to a parallel interface with no added value."
+}

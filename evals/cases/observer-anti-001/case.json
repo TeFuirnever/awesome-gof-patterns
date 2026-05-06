@@ -1,0 +1,17 @@
+{
+  "id": "observer-anti-001",
+  "pattern": "Observer",
+  "category": "anti",
+  "complexity": "low",
+  "language": "Python",
+  "source_code": "class PaymentGateway:\n    def charge(self, amount):\n        result = self.stripe.charge(amount)\n        self.db.save_transaction(result)\n        return result\n\n# Only one thing happens after charging: save to DB\n# No need for observer/listener pattern",
+  "ground_truth": {
+    "pattern": "none",
+    "anti_patterns": [
+      "only-one-listener"
+    ],
+    "refactoring_steps_valid": false
+  },
+  "expected_smells": [],
+  "anti_reason": "Only one consumer (DB save). Observer adds unnecessary complexity for a single direct call."
+}

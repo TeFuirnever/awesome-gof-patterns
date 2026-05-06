@@ -1,0 +1,18 @@
+{
+  "id": "observer-anti-003",
+  "pattern": "Observer",
+  "category": "anti",
+  "complexity": "low",
+  "language": "Go",
+  "source_code": "func main() {\n    cfg := config.Load(\"config.yaml\")\n    db := database.Connect(cfg.DB)\n    server := api.New(cfg, db)\n    server.Run()\n}\n\n// Application startup with deterministic init order\n// Each step depends on the previous one completing\n// No dynamic listeners needed - fixed init sequence",
+  "ground_truth": {
+    "pattern": "none",
+    "anti_patterns": [
+      "only-one-listener",
+      "replace-existing-event-system"
+    ],
+    "refactoring_steps_valid": false
+  },
+  "expected_smells": [],
+  "anti_reason": "Deterministic startup sequence with fixed dependencies. No dynamic listeners needed, and Go channels could handle any future async needs."
+}

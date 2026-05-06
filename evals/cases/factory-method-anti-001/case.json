@@ -1,0 +1,18 @@
+{
+  "id": "factory-method-anti-001",
+  "pattern": "FactoryMethod",
+  "category": "anti",
+  "complexity": "low",
+  "language": "TypeScript",
+  "source_code": "class AppConfig {\n  private static instance: AppConfig;\n\n  private constructor() {}\n\n  static getInstance(): AppConfig {\n    if (!AppConfig.instance) {\n      AppConfig.instance = new AppConfig();\n    }\n    return AppConfig.instance;\n  }\n}\n\n// Singleton - not a factory method scenario\n// Only one concrete type (AppConfig itself), no product family",
+  "ground_truth": {
+    "pattern": "none",
+    "anti_patterns": [
+      "only-one-product-variant",
+      "creation-logic-is-trivial"
+    ],
+    "refactoring_steps_valid": false
+  },
+  "expected_smells": [],
+  "anti_reason": "Only one product type (AppConfig) with trivial construction. Factory Method is overkill."
+}

@@ -1,0 +1,16 @@
+{
+  "id": "factory-method-fit-008",
+  "pattern": "FactoryMethod",
+  "category": "fit",
+  "complexity": "medium",
+  "language": "TypeScript",
+  "source_code": "class ConnectionPool {\n  private pool: Map<string, Connection> = new Map();\n\n  constructor(private config: PoolConfig) {}\n\n  getConnection(dbType: string): Connection {\n    if (this.pool.has(dbType)) {\n      return this.pool.get(dbType)!;\n    }\n\n    let conn: Connection;\n    switch (dbType) {\n      case 'read-replica':\n        conn = new PostgresConnection(this.config.readReplicaUrl);\n        break;\n      case 'write-primary':\n        conn = new PostgresConnection(this.config.writePrimaryUrl);\n        break;\n      case 'analytics':\n        conn = new ClickhouseConnection(this.config.analyticsUrl);\n        break;\n      case 'cache':\n        conn = new RedisConnection(this.config.cacheUrl);\n        break;\n    }\n\n    this.pool.set(dbType, conn);\n    return conn;\n  }\n}",
+  "ground_truth": {
+    "pattern": "FactoryMethod",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "conditional-construction"
+  ]
+}

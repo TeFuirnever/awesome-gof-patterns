@@ -1,0 +1,102 @@
+{
+  "adapter-anti-001": {
+    "A": {
+      "top1_correct": null,
+      "recommendation": null,
+      "antipatterns": [],
+      "note": "Placeholder result — integrate Anthropic SDK for production use"
+    },
+    "B": {
+      "top1_correct": null,
+      "recommendation": null,
+      "antipatterns": [],
+      "note": "Placeholder result — integrate Anthropic SDK for production use"
+    },
+    "C": {
+      "top1_correct": null,
+      "recommendation": null,
+      "antipatterns": [],
+      "note": "Placeholder result — integrate Anthropic SDK for production use"
+    }
+  },
+  "adapter-anti-002": {
+    "A": {
+      "top1_correct": null,
+      "recommendation": null,
+      "antipatterns": [],
+      "note": "Placeholder result — integrate Anthropic SDK for production use"
+    },
+    "B": {
+      "top1_correct": null,
+      "recommendation": null,
+      "antipatterns": [],
+      "note": "Placeholder result — integrate Anthropic SDK for production use"
+    },
+    "C": {
+      "top1_correct": null,
+      "recommendation": null,
+      "antipatterns": [],
+      "note": "Placeholder result — integrate Anthropic SDK for production use"
+    }
+  },
+  "adapter-fit-001": {
+    "A": {
+      "top1_correct": null,
+      "recommendation": null,
+      "antipatterns": [],
+      "note": "Placeholder result — integrate Anthropic SDK for production use"
+    },
+    "B": {
+      "top1_correct": null,
+      "recommendation": null,
+      "antipatterns": [],
+      "note": "Placeholder result — integrate Anthropic SDK for production use"
+    },
+    "C": {
+      "top1_correct": null,
+      "recommendation": null,
+      "antipatterns": [],
+      "note": "Placeholder result — integrate Anthropic SDK for production use"
+    }
+  },
+  "adapter-fit-002": {
+    "A": {
+      "top1_correct": null,
+      "recommendation": null,
+      "antipatterns": [],
+      "note": "Placeholder result — integrate Anthropic SDK for production use"
+    },
+    "B": {
+      "top1_correct": null,
+      "recommendation": null,
+      "antipatterns": [],
+      "note": "Placeholder result — integrate Anthropic SDK for production use"
+    },
+    "C": {
+      "top1_correct": null,
+      "recommendation": null,
+      "antipatterns": [],
+      "note": "Placeholder result — integrate Anthropic SDK for production use"
+    }
+  },
+  "adapter-fit-003": {
+    "A": {
+      "top1_correct": null,
+      "recommendation": null,
+      "antipatterns": [],
+      "note": "Placeholder result — integrate Anthropic SDK for production use"
+    },
+    "B": {
+      "top1_correct": null,
+      "recommendation": null,
+      "antipatterns": [],
+      "note": "Placeholder result — integrate Anthropic SDK for production use"
+    },
+    "C": {
+      "top1_correct": null,
+      "recommendation": null,
+      "antipatterns": [],
+      "note": "Placeholder result — integrate Anthropic SDK for production use"
+    }
+  }
+}

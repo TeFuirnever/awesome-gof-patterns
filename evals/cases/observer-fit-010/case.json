@@ -1,0 +1,16 @@
+{
+  "id": "observer-fit-010",
+  "pattern": "Observer",
+  "category": "fit",
+  "complexity": "high",
+  "language": "TypeScript",
+  "source_code": "class UserService {\n  constructor(\n    private emailService: EmailService,\n    private analytics: AnalyticsService,\n    private auditLog: AuditLogService,\n    private cache: CacheService,\n    private search: SearchIndexer,\n  ) {}\n\n  async createUser(data: UserData): Promise<User> {\n    const user = await this.db.insert(data);\n\n    // Tightly coupled to each service\n    await this.emailService.sendWelcome(user.email, user.name);\n    this.analytics.track('user_created', { id: user.id });\n    this.auditLog.record('user.create', user.id, data);\n    this.cache.invalidate('users');\n    this.search.index('users', user);\n\n    return user;\n  }\n\n  async deactivateUser(id: string): Promise<void> {\n    await this.db.update(id, { active: false });\n\n    // Must remember to notify all the same services\n    await this.emailService.sendGoodbye(/*...*/);\n    this.analytics.track('user_deactivated', { id });\n    this.auditLog.record('user.deactivate', id);\n    this.cache.invalidate('users');\n    this.search.remove('users', id);\n  }\n}",
+  "ground_truth": {
+    "pattern": "Observer",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "tight-coupling-on-notification"
+  ]
+}

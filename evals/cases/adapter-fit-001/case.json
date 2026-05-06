@@ -1,0 +1,16 @@
+{
+  "id": "adapter-fit-001",
+  "pattern": "Adapter",
+  "category": "fit",
+  "complexity": "low",
+  "language": "TypeScript",
+  "source_code": "// Your system expects this interface\ninterface IUserRepository {\n  findById(id: string): Promise<User>;\n  save(user: User): Promise<void>;\n}\n\n// Third-party SDK you can't modify\nclass ThirdPartyUserSDK {\n  getUser(userId: string): Promise<{ user_id: string; full_name: string; mail: string }> {\n    // API call to third-party service\n  }\n  updateUser(payload: { user_id: string; full_name: string; mail: string }): Promise<void> {\n    // API call\n  }\n}\n\n// Current approach: inline translation at every call site\nclass UserService {\n  constructor(private sdk: ThirdPartyUserSDK) {}\n\n  async getUser(id: string): Promise<User> {\n    const raw = await this.sdk.getUser(id);\n    return { id: raw.user_id, name: raw.full_name, email: raw.mail };\n  }\n\n  async save(user: User): Promise<void> {\n    await this.sdk.updateUser({\n      user_id: user.id,\n      full_name: user.name,\n      mail: user.email\n    });\n  }\n}",
+  "ground_truth": {
+    "pattern": "Adapter",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "incompatible-interface-shape"
+  ]
+}

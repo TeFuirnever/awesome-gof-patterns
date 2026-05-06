@@ -1,0 +1,16 @@
+{
+  "id": "strategy-fit-008",
+  "pattern": "Strategy",
+  "category": "fit",
+  "complexity": "low",
+  "language": "Python",
+  "source_code": "class BlurFilter extends BaseFilter:\n    def apply(self, image):\n        return self._convolve(image, self.blur_kernel)\n\nclass SharpenFilter extends BaseFilter:\n    def apply(self, image):\n        return self._convolve(image, self.sharpen_kernel)\n\nclass EdgeFilter extends BaseFilter:\n    def apply(self, image):\n        return self._convolve(image, self.edge_kernel)\n\nclass EmbossFilter extends BaseFilter:\n    def apply(self, image):\n        return self._convolve(image, self.emboss_kernel)",
+  "ground_truth": {
+    "pattern": "Strategy",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "parallel-subclass-only-differs-in-one-method"
+  ]
+}

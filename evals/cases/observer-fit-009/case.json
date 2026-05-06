@@ -1,0 +1,16 @@
+{
+  "id": "observer-fit-009",
+  "pattern": "Observer",
+  "category": "fit",
+  "complexity": "medium",
+  "language": "Go",
+  "source_code": "type FileWatcher struct {\n    callbacks []func(fsnotify.Event)\n}\n\nfunc (fw *FileWatcher) OnChange(fn func(fsnotify.Event)) {\n    fw.callbacks = append(fw.callbacks, fn)\n}\n\nfunc (fw *FileWatcher) handleEvent(event fsnotify.Event) {\n    for _, cb := range fw.callbacks {\n        cb(event)\n    }\n}\n\nwatcher := &FileWatcher{}\nwatcher.OnChange(func(e fsnotify.Event) {\n    compiler.Rebuild(e.Name)\n})\nwatcher.OnChange(func(e fsnotify.Event) {\n    linter.Check(e.Name)\n})\nwatcher.OnChange(func(e fsnotify.Event) {\n    testRunner.RunAffected(e.Name)\n})",
+  "ground_truth": {
+    "pattern": "Observer",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "manual-listener-list"
+  ]
+}

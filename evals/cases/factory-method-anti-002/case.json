@@ -1,0 +1,18 @@
+{
+  "id": "factory-method-anti-002",
+  "pattern": "FactoryMethod",
+  "category": "anti",
+  "complexity": "medium",
+  "language": "Go",
+  "source_code": "func NewUser(name, email string) *User {\n    return &User{\n        ID:    uuid.New().String(),\n        Name:  name,\n        Email: email,\n    }\n}\n\n// Simple constructor function - no need for factory method pattern\n// One product type, no inheritance, no decision logic",
+  "ground_truth": {
+    "pattern": "none",
+    "anti_patterns": [
+      "only-one-product-variant",
+      "creation-logic-is-trivial"
+    ],
+    "refactoring_steps_valid": false
+  },
+  "expected_smells": [],
+  "anti_reason": "Simple constructor function for a single type. No conditional creation, no product hierarchy. Static factory function suffices."
+}

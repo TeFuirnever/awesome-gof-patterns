@@ -1,0 +1,17 @@
+{
+  "id": "adapter-anti-002",
+  "pattern": "Adapter",
+  "category": "anti",
+  "complexity": "medium",
+  "language": "TypeScript",
+  "source_code": "class SubsystemA {\n  operation1() { return 'A1'; }\n  operation2() { return 'A2'; }\n  operation3() { return 'A3'; }\n  operation4() { return 'A4'; }\n  operation5() { return 'A5'; }\n}\n\nclass SubsystemB {\n  method1() { return 'B1'; }\n  method2() { return 'B2'; }\n  method3() { return 'B3'; }\n}\n\nclass SubsystemC {\n  doThing() { return 'C1'; }\n  doOther() { return 'C2'; }\n}\n\n// Client struggles with too many interfaces - wants one simple API\nclass Client {\n  constructor(\n    private a: SubsystemA,\n    private b: SubsystemB,\n    private c: SubsystemC\n  ) {}\n\n  doWork() {\n    this.a.operation1();\n    this.b.method2();\n    this.c.doThing();\n  }\n}",
+  "ground_truth": {
+    "pattern": "none",
+    "anti_patterns": [
+      "facade-would-be-better"
+    ],
+    "refactoring_steps_valid": false
+  },
+  "expected_smells": [],
+  "anti_reason": "The problem is too many interfaces to manage (complexity), not incompatible interface shapes. Facade is the right pattern here."
+}

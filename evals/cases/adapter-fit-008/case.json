@@ -1,0 +1,17 @@
+{
+  "id": "adapter-fit-008",
+  "pattern": "Adapter",
+  "category": "fit",
+  "complexity": "high",
+  "language": "Python",
+  "source_code": "# Third-party analytics SDK (can't modify)\nclass ThirdPartyAnalytics:\n    def track_event(self, event_name, properties=None, user_id=None, timestamp=None):\n        \"\"\"Sends event via HTTP POST, returns raw response dict\"\"\"\n        pass\n\n    def identify(self, user_id, traits=None):\n        \"\"\"Identifies user with traits dict\"\"\"\n        pass\n\n    def page_view(self, page_name, url=None, referrer=None):\n        \"\"\"Tracks page view\"\"\"\n        pass\n\n# Your system uses typed event objects\n@dataclass\nclass AnalyticsEvent:\n    name: str\n    properties: dict\n    user_id: str\n    occurred_at: datetime\n\n@dataclass\nclass PageViewEvent:\n    page: str\n    url: str\n    referrer: str\n    user_id: str\n\n# Every service writes its own translation\nclass CheckoutAnalytics:\n    def track_purchase(self, order):\n        self.analytics.track_event(\n            event_name='purchase_completed',\n            properties={'order_id': order.id, 'total': order.total},\n            user_id=order.customer_id,\n            timestamp=order.completed_at.isoformat()\n        )\n\nclass UserAnalytics:\n    def track_signup(self, user):\n        self.analytics.track_event(\n            event_name='user_registered',\n            properties={'plan': user.plan, 'source': user.referral_source},\n            user_id=user.id,\n            timestamp=datetime.now().isoformat()\n        )\n\n    def track_page(self, user, page, url):\n        self.analytics.page_view(\n            page_name=page,\n            url=url,\n            referrer=user.last_referrer\n        )",
+  "ground_truth": {
+    "pattern": "Adapter",
+    "anti_patterns": [],
+    "refactoring_steps_valid": true
+  },
+  "expected_smells": [
+    "defensive-wrapper-at-boundary",
+    "glue-code-accumulation"
+  ]
+}

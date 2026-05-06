@@ -1,0 +1,18 @@
+{
+  "id": "adapter-anti-001",
+  "pattern": "Adapter",
+  "category": "anti",
+  "complexity": "low",
+  "language": "Python",
+  "source_code": "class UserAdapter:\n    def to_dict(self, user):\n        return {\n            'name': user.name,\n            'email': user.email,\n        }\n\n# Both sides are our own code. Just use the User object directly\n# or define a consistent to_dict() method on User itself.",
+  "ground_truth": {
+    "pattern": "none",
+    "anti_patterns": [
+      "both-sides-are-yours",
+      "trivial-field-mapping"
+    ],
+    "refactoring_steps_valid": false
+  },
+  "expected_smells": [],
+  "anti_reason": "Both interfaces belong to the same codebase. Direct method or consistent naming is simpler than an adapter layer."
+}
