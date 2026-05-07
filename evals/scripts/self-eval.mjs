@@ -474,6 +474,7 @@ function normalizePattern(name) {
     'factorymethod': 'FactoryMethod',
     'factory_method': 'FactoryMethod',
     'factory-method': 'FactoryMethod',
+    'factory method': 'FactoryMethod',
     'adapter': 'Adapter',
   };
   return map[name.toLowerCase()] || name;

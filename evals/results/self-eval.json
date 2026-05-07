@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-05-06T10:12:18.709Z",
+  "generated_at": "2026-05-07T01:32:57.575Z",
   "evaluator": "self-eval (programmatic smell matching)",
   "n_cases": 50,
   "m1_accuracy": {
     "armA": 0.38,
-    "armB": 0.34,
-    "armC": 0.5
+    "armB": 0.36,
+    "armC": 0.56
   },
-  "effect_CB": 0.15999999999999998,
-  "effect_BA": -0.03999999999999998,
+  "effect_CB": 0.20000000000000007,
+  "effect_BA": -0.020000000000000018,
   "bootstrap_ci_95": {
-    "lower": -0.02,
-    "upper": 0.34
+    "lower": 0.02,
+    "upper": 0.38
   },
   "discordant_pairs": {
     "total": 24,
-    "b_to_c": 16,
-    "c_to_b": 8
+    "b_to_c": 17,
+    "c_to_b": 7
   },
   "pattern_breakdown": {
     "Strategy": {
@@ -28,32 +28,32 @@
     "Observer": {
       "total": 10,
       "armA": 3,
-      "armB": 2,
+      "armB": 3,
       "armC": 4
     },
     "FactoryMethod": {
       "total": 10,
       "armA": 1,
-      "armB": 2,
-      "armC": 0
+      "armB": 1,
+      "armC": 3
     },
     "Adapter": {
       "total": 10,
       "armA": 2,
-      "armB": 3,
+      "armB": 2,
       "armC": 8
     },
     "none": {
       "total": 10,
       "armA": 7,
-      "armB": 5,
+      "armB": 7,
       "armC": 9
     }
   },
   "go_no_go": {
     "passed": true,
     "threshold": 0.15,
-    "observed": 0.15999999999999998
+    "observed": 0.20000000000000007
   },
   "per_case": [
     {
@@ -133,7 +133,7 @@
         "correct": false
       },
       "armB": {
-        "predicted": "Observer",
+        "predicted": "Strategy",
         "correct": false
       },
       "armC": {
@@ -235,8 +235,8 @@
         "correct": false
       },
       "armB": {
-        "predicted": "Adapter",
-        "correct": true
+        "predicted": "Strategy",
+        "correct": false
       },
       "armC": {
         "predicted": "Adapter",
@@ -252,7 +252,7 @@
         "correct": false
       },
       "armB": {
-        "predicted": "Strategy",
+        "predicted": "none",
         "correct": false
       },
       "armC": {
@@ -286,8 +286,8 @@
         "correct": true
       },
       "armB": {
-        "predicted": "FactoryMethod",
-        "correct": false
+        "predicted": "none",
+        "correct": true
       },
       "armC": {
         "predicted": "none",
@@ -308,7 +308,7 @@
       },
       "armC": {
         "predicted": "Factory Method",
-        "correct": false
+        "correct": true
       }
     },
     {
@@ -376,7 +376,7 @@
       },
       "armC": {
         "predicted": "Factory Method",
-        "correct": false
+        "correct": true
       }
     },
     {
@@ -388,7 +388,7 @@
         "correct": false
       },
       "armB": {
-        "predicted": "Observer",
+        "predicted": "Strategy",
         "correct": false
       },
       "armC": {
@@ -405,8 +405,8 @@
         "correct": true
       },
       "armB": {
-        "predicted": "FactoryMethod",
-        "correct": true
+        "predicted": "Observer",
+        "correct": false
       },
       "armC": {
         "predicted": "Strategy",
@@ -422,12 +422,12 @@
         "correct": false
       },
       "armB": {
-        "predicted": "FactoryMethod",
-        "correct": true
+        "predicted": "Strategy",
+        "correct": false
       },
       "armC": {
         "predicted": "Factory Method",
-        "correct": false
+        "correct": true
       }
     },
     {
@@ -439,8 +439,8 @@
         "correct": false
       },
       "armB": {
-        "predicted": "Strategy",
-        "correct": false
+        "predicted": "FactoryMethod",
+        "correct": true
       },
       "armC": {
         "predicted": "none",
@@ -541,7 +541,7 @@
         "correct": false
       },
       "armB": {
-        "predicted": "none",
+        "predicted": "Adapter",
         "correct": false
       },
       "armC": {
@@ -592,7 +592,7 @@
         "correct": false
       },
       "armB": {
-        "predicted": "none",
+        "predicted": "Adapter",
         "correct": false
       },
       "armC": {
@@ -643,8 +643,8 @@
         "correct": true
       },
       "armB": {
-        "predicted": "Strategy",
-        "correct": false
+        "predicted": "Observer",
+        "correct": true
       },
       "armC": {
         "predicted": "Observer",
@@ -728,8 +728,8 @@
         "correct": true
       },
       "armB": {
-        "predicted": "FactoryMethod",
-        "correct": false
+        "predicted": "none",
+        "correct": true
       },
       "armC": {
         "predicted": "none",
@@ -762,7 +762,7 @@
         "correct": false
       },
       "armB": {
-        "predicted": "Observer",
+        "predicted": "none",
         "correct": false
       },
       "armC": {
@@ -779,7 +779,7 @@
         "correct": true
       },
       "armB": {
-        "predicted": "FactoryMethod",
+        "predicted": "none",
         "correct": false
       },
       "armC": {
@@ -796,7 +796,7 @@
         "correct": false
       },
       "armB": {
-        "predicted": "none",
+        "predicted": "Adapter",
         "correct": false
       },
       "armC": {
